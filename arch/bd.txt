@@ -1,5 +1,5 @@
 Bd field types legened:
-- id: int32
+- id: uint32
 - login: varchar(32)
 - name, surname, patronymic: varchar(32)
 - password: varchar(64)

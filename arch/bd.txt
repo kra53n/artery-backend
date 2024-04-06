@@ -37,7 +37,8 @@ CLIENT
 CITY
 - id
 - name
-- location_id
+- location_x: float
+- location_y: float
 
 STOCK
 - id
@@ -76,11 +77,6 @@ ORDER
 - city_id_a
 - city_id_b
 
-
-LOCATION
-- id
-- x: float
-- y: float
 
 ORDER-PRODUCT
 - order_id

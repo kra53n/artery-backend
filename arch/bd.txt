@@ -1,0 +1,99 @@
+Bd field types legened:
+- id: int32
+- login: varchar(32)
+- name, surname, patronymic: varchar(32)
+- password: varchar(64)
+- description: text
+- ava: blob
+- phone: varchar(11)
+- email: varchar(256)
+
+
+ADMIN
+- id
+- login
+- password
+
+COMPANY
+- id
+- image: blob
+- name
+- email
+- password
+- description
+- phone
+
+CLIENT
+- id
+- name
+- surname
+- patronymic
+- password
+- ava
+- city_id
+- phone
+- email
+
+CITY
+- id
+- name
+- location_id
+
+STOCK
+- id
+- name
+- city_id
+
+TRANSIT
+- id
+- city_id
+
+PICK_POINT
+- id
+- name
+- city_id
+
+ROAD
+- id
+- city_id_a
+- city_id_b
+- len
+- time
+- cost
+- transport_type(car, railway, air, sea, river)
+
+
+PRODUCT
+- id
+- ava
+- cost
+- size
+- weight
+- description
+
+ORDER
+- id
+- city_id_a
+- city_id_b
+
+
+LOCATION
+- id
+- x: float
+- y: float
+
+ORDER-PRODUCT
+- order_id
+- product_id
+
+
+COMPANY-PRODUCT
+- id
+- comapny_id
+- product_id
+
+
+STOCK-PRODUCT
+- stock_id
+- product_id
+- amount: uint32

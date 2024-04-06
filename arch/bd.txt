@@ -66,9 +66,9 @@ ROAD
 PRODUCT
 - id
 - ava
-- cost
-- size
-- weight
+- cost: float
+- size: float
+- weight: float
 - description
 
 ORDER

@@ -79,6 +79,7 @@ ORDER
 
 
 ORDER-PRODUCT
+- id
 - order_id
 - product_id
 
@@ -90,6 +91,7 @@ COMPANY-PRODUCT
 
 
 STOCK-PRODUCT
+- id
 - stock_id
 - product_id
 - amount: uint32

@@ -1,7 +1,7 @@
 [default]
-name =
-user =
-password =
-host =
-port =
-default-character-set =
+name = artery
+user = root
+password =1234
+host = localhost
+port = 3306
+default-character-set = utf8

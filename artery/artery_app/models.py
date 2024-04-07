@@ -1,6 +1,5 @@
 from django.db import models
 
-UPLOADS = 'uploads/'
 # Create your models here.
 
 # Roles 

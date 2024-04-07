@@ -61,13 +61,15 @@ class PickPoint(models.Model):
 
 class Road(models.Model):
     ''' Map element '''
-    city_id_a = models.foreignkey(
+    city_id_a = models.ForeignKey(
         'City',
-        on_delete=models.cascade
+        related_name='city_road_id_a',
+        on_delete=models.CASCADE
     )
-    city_id_b = models.foreignkey(
+    city_id_b = models.ForeignKey(
         'City',
-        on_delete=models.cascade
+        related_name='city_road_id_b',
+        on_delete=models.CASCADE
     )
     lenth = models.FloatField()
     time = models.TimeField()
@@ -89,17 +91,19 @@ class Product(models.Model):
     cost = models.FloatField()
     size = models.FloatField()
     weight = models.FloatField()
-    description = models.TextField(black=True)
+    description = models.TextField(blank=True)
 
 
 class Order(models.Model):
     ''' Order element '''
     city_id_a = models.ForeignKey(
         'City',
+        related_name='city_order_id_a',
         on_delete=models.PROTECT
     )
     city_id_b = models.ForeignKey(
         'City',
+        related_name='city_order_id_b',
         on_delete=models.PROTECT
     )
     

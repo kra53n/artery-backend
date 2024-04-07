@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from configparser import ConfigParser
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONF_DIR = Path(__file__).resolve().parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -31,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'artery.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -67,16 +70,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'artery.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
+# database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+db_config = ConfigParser()
+db_config.read(CONF_DIR / 'mysql.cnf')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': db_config['default']['name'],
+        'USER': db_config['default']['user'],
+        'PASSWORD': db_config['default']['password'],
+        'HOST': db_config['default']['host'],
+        'PORT': db_config['default']['port'],
     }
 }
 

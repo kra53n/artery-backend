@@ -1,9 +1,8 @@
 from django.db import models
 
-# Create your models here.
 
-# Roles 
 class Company(models.Model):
+    ''' Role '''
     image = models.BinaryField(blank=True)
     name = models.CharField(max_length=32)
     email = models.EmailField()
@@ -11,7 +10,9 @@ class Company(models.Model):
     phone = models.CharField(max_length=11)
     description = models.TextField(blank=True)
 
+
 class Client(models.Model):
+    ''' Role '''
     surname = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     patronymic = models.CharField(max_length=32, blank=True)
@@ -25,33 +26,41 @@ class Client(models.Model):
     )
 
 
-# Map elements
 class City(models.Model):
+    ''' Map element '''
     name = models.CharField(max_length=32)
     location_x = models.FloatField()
     location_y = models.FloatField()
 
+
 class Stock(models.Model):
+    ''' Map element '''
     name = models.CharField(max_length=32)
     city_id = models.ForeignKey(
         'City',
         on_delete=models.CASCADE
     ) 
 
+
 class Transit(models.Model):
+    ''' Map element '''
     city_id = models.ForeignKey(
         'City',
         on_delete=models.CASCADE
     )
 
+
 class PickPoint(models.Model):
+    ''' Map element '''
     name = models.CharField(max_length=32)
     city_id = models.ForeignKey(
         'City',
         on_delete=models.CASCADE
     ) 
     
+
 class Road(models.Model):
+    ''' Map element '''
     city_id_a = models.foreignkey(
         'City',
         on_delete=models.cascade
@@ -73,8 +82,8 @@ class Road(models.Model):
     transport_type = models.CharField(max_length=7, choices=TRANSPORT_TYPE)
 
 
-# Order
 class Product(models.Model):
+    ''' Order element '''
     image = models.BinaryField(blank=True)
     name = models.CharField(max_length=32)
     cost = models.FloatField()
@@ -82,7 +91,9 @@ class Product(models.Model):
     weight = models.FloatField()
     description = models.TextField(black=True)
 
+
 class Order(models.Model):
+    ''' Order element '''
     city_id_a = models.ForeignKey(
         'City',
         on_delete=models.PROTECT
@@ -93,8 +104,8 @@ class Order(models.Model):
     )
     
 
-# Intermediate tables
 class OrderProduct(models.Model):
+    ''' Intermediate model '''
     order_id = models.ForeignKey(
         'Order',
         on_delete=models.CASCADE
@@ -104,7 +115,9 @@ class OrderProduct(models.Model):
         on_delete=models.CASCADE
     ) 
     
+
 class CompanyProduct(models.Model):
+    ''' Intermediate model '''
     company_id = models.ForeignKey(
         'Company',
         on_delete=models.CASCADE
@@ -114,7 +127,9 @@ class CompanyProduct(models.Model):
         on_delete=models.CASCADE
     )
     
+
 class StockProduct(models.Model):
+    ''' Intermediate model '''
     stock_id = models.ForeignKey(
         'Stock',
         on_delete=models.CASCADE

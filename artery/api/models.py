@@ -25,12 +25,18 @@ class Client(models.Model):
         on_delete=models.PROTECT
     )
 
+    required_fields = 'surname', 'name', 'phone', 'email', 'password', 'city_id'
+    all_fields = 'surname', 'name', 'patronymic', 'phone', 'email', 'password', 'image', 'city_id'
+
 
 class City(models.Model):
     ''' Map element '''
     name = models.CharField(max_length=32)
     location_x = models.FloatField()
     location_y = models.FloatField()
+
+    def __str__(self):
+        return f'{self.name} ({self.location_x}, {self.location_y})'
 
 
 class Stock(models.Model):

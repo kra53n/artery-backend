@@ -56,6 +56,9 @@ class Client(models.Model):
             'city': self.city.id,
         }
 
+        def __str__(self):
+            return f''
+
 
 class City(models.Model):
     ''' Map element '''
@@ -141,9 +144,10 @@ class Order_Product(models.Model):
     ) 
     amount = models.IntegerField()
 
+
 class Company_City(models.Model):
     ''' Intermediate model'''
-    comapny = models.ForeignKey(
+    company = models.ForeignKey(
         'Company',
         on_delete=models.CASCADE,
     )

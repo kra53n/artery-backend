@@ -21,4 +21,6 @@ urlpatterns = [
 
     # path('order/take/', None, name='take an order'),
     # path('order/info/', None, name='recieve an information about order'),
+
+    path('company/cities/', views.CompanyCities.as_view(), name='recieve an cities available for the company'),
 ]

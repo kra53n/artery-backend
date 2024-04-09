@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
+from .services import cities
 from .models import Company, City, Client
 
 
@@ -136,3 +137,31 @@ class LoginCompany(ViewWithGet):
         fields = 'email', 'password'
         missed_fields = [f for f in fields if f not in self._request.POST]
         return missed_fields
+
+
+class ProductAdd(ViewWithGet):
+    pass
+
+
+class ProductGet(ViewWithGet):
+    pass
+
+
+class OrderTake(ViewWithGet):
+    pass
+
+
+class OrderInfo(ViewWithGet):
+    pass
+
+
+class CompanyCities(ViewWithGet):
+    '''
+    Send the cities available for the company
+    '''
+    def post(self, request):
+        if 'company_id' not in request.session or 'client_id' not in request.session:
+            return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
+        if 'company_id' not in request.POST:
+            return JsonResponse({'ok': False, 'info': 'company id was not given'})
+        return JsonResponse({'ok': True, 'info': cities.get_by_company(request.POST['company_id'])})

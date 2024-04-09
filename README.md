@@ -2,6 +2,9 @@
 
 ## Usage
 
+> [!NOTE]
+> Available api adresses located in the `artery/api/views.py` file.
+
 ### Install Python packages
 
 ```

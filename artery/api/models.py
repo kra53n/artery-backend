@@ -1,13 +1,16 @@
+from django.core.validators import EmailValidator
 from django.db import models
+
+from .validators import validate_password, validate_phone
 
 
 class Company(models.Model):
     ''' Role '''
     image = models.BinaryField(blank=True)
     name = models.CharField(max_length=32)
-    email = models.EmailField()
-    password = models.CharField(max_length=64)
-    phone = models.CharField(max_length=11)
+    email = models.EmailField(validators=[EmailValidator])
+    password = models.CharField(max_length=64, validators=[validate_password])
+    phone = models.CharField(max_length=11, validators=[validate_phone])
     description = models.TextField(blank=True)
 
 
@@ -16,9 +19,9 @@ class Client(models.Model):
     surname = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     patronymic = models.CharField(max_length=32, blank=True)
-    phone = models.CharField(max_length=11)
-    email = models.EmailField()
-    password = models.CharField(max_length=64)
+    phone = models.CharField(max_length=11, validators=[validate_phone])
+    email = models.EmailField(validators=[EmailValidator])
+    password = models.CharField(max_length=64, validators=[validate_password])
     image = models.BinaryField(blank=True)
     city_id = models.ForeignKey(
         'City',

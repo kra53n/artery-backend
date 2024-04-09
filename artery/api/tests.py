@@ -5,7 +5,23 @@ from .models import City
 
 class TestClientRegistration(TestCase):
     def test_correct_info(self):
-        City(name='Москва', location_x=0.1, location_y=0.3).save()
+        City(id=1, name='Москва', location_x=0.1, location_y=0.3).save()
+        c = Client()
+        response = c.post(
+            '/api/register/client/',
+            {
+                'surname': 'asdf',
+                'name': 'asdf',
+                'phone': '31113339955',
+                'email': 'example@gmail.com',
+                'password': 'smth',
+                'city_id': 1,
+            },
+        )
+        assert response.json()['ok'] == True
+
+    def test_incorrect_phone_with_letters(self):
+        City(id=1, name='Москва', location_x=0.1, location_y=0.3).save()
 
         c = Client()
         response = c.post(
@@ -13,12 +29,29 @@ class TestClientRegistration(TestCase):
             {
                 'surname': 'asdf',
                 'name': 'asdf',
-                'phone': 'asdf',
-                'email': 'asdf',
+                'phone': 'sadfsadf',
+                'email': 'example@gmail.com',
                 'password': 'smth',
                 'city_id': 1,
             },
         )
-        # assert 1 == 0
-        print(response.content)
-        # response.status_code
+        json = response.json()
+        assert json['ok'] == False and 'phone' in json['info']
+
+    def test_incorrect_phone_with_digits(self):
+        City(id=1, name='Москва', location_x=0.1, location_y=0.3).save()
+
+        c = Client()
+        response = c.post(
+            '/api/register/client/',
+            {
+                'surname': 'asdf',
+                'name': 'asdf',
+                'phone': '1231233',
+                'email': 'example@gmail.com',
+                'password': 'smth',
+                'city_id': 1,
+            },
+        )
+        json = response.json()
+        assert json['ok'] == False and 'phone' in json['info']

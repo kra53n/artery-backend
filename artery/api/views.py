@@ -1,4 +1,4 @@
-from django.core import serializers
+from django.contrib import auth
 from django.core.exceptions import ValidationError
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
@@ -9,6 +9,11 @@ from .models import Company, City, Client
 
 def index(request):
     return HttpResponse('u r at the index page of the api')
+
+
+def logout(request):
+    auth.logout(request)
+    return JsonResponse({'ok': True})
 
 
 class Me(View):
@@ -26,7 +31,7 @@ class Me(View):
                 'ok': True,
                 'info': Company.objects.get(id=request.session['company_id']).get_dict(),
             })
-        return HttpResponse('wait the post request')
+        return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
 
 
 class RegisterClient(View):

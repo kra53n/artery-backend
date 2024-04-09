@@ -7,6 +7,8 @@ app_name = 'api'
 urlpatterns = [
     path('', views.index, name='index'),
 
+    path('me', views.Me.as_view(), name='info about me'),
+
     path('register/client/', views.RegisterClient.as_view(), name='client registration'),
     path('register/company/', views.RegisterCompany.as_view(), name='comapny registration'),
 

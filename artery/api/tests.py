@@ -1,6 +1,7 @@
 from django.test import Client, TestCase
 
 from .models import City
+from .models import Client as ClientModel
 
 
 class TestClientRegistration(TestCase):
@@ -94,3 +95,28 @@ class TestCompanyRegistration(TestCase):
 
     def test_incorrect_email(self):
         pass
+
+
+class TestClientLogining(TestCase):
+    def test_correct_info(self):
+        City(id=1, name='Москва', location_x=0.1, location_y=0.3).save()
+        client_model = ClientModel(
+            id=1,
+            surname='asdasd',
+            name='asdasd',
+            phone='75345234644',
+            email='example@gmail.com',
+            password='123',
+            city_id=City.objects.get(id=1)
+        )
+        client_model.save()
+
+        c = Client()
+        response = c.post(
+            '/api/login/client/',
+            {
+                'email': 'example@gmail.com',
+                'password': '123',
+            },
+        )
+        print(response.content)

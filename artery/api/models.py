@@ -16,6 +16,18 @@ class Company(models.Model):
     required_fields = 'name', 'email', 'password', 'phone'
     all_fields = 'image', 'name', 'email', 'password', 'phone', 'description'
 
+    def get_dict(self):
+        return {
+            'who': 'company',
+            'name': self.name,
+            'email': self.email,
+            'password': self.password,
+            'phone': self.phone,
+            'description': self.description,
+        }
+
+
+# TODO: rename ForeignKey's
 
 class Client(models.Model):
     ''' Role '''
@@ -33,6 +45,18 @@ class Client(models.Model):
 
     required_fields = 'surname', 'name', 'phone', 'email', 'password', 'city_id'
     all_fields = 'surname', 'name', 'patronymic', 'phone', 'email', 'password', 'image', 'city_id'
+
+    def get_dict(self):
+        return {
+            'who': 'client',
+            'surname': self.surname,
+            'name': self.name,
+            'patronymic': self.patronymic,
+            'phone': self.phone,
+            'email': self.email,
+            'password': self.password,
+            'city_id': self.city_id.id,
+        }
 
 
 class City(models.Model):

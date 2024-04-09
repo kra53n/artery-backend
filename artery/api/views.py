@@ -16,10 +16,12 @@ def logout(request):
     return JsonResponse({'ok': True})
 
 
-class Me(View):
+class ViewWithGet(View):
     def get(self, request):
         return HttpResponse('wait the post request')
 
+
+class Me(ViewWithGet):
     def post(self, request):
         if 'client_id' in request.session:
             return JsonResponse({
@@ -34,10 +36,7 @@ class Me(View):
         return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
 
 
-class RegisterClient(View):
-    def get(self, request):
-        return HttpResponse('wait the post request')
-
+class RegisterClient(ViewWithGet):
     def post(self, request):
         self._request = request
         empty_required_fields = [f for f in Client.required_fields if f not in self._request.POST]
@@ -63,10 +62,7 @@ class RegisterClient(View):
         return fields_from_post
 
 
-class RegisterCompany(View):
-    def get(self, request):
-        return HttpResponse('wait the post request')
-
+class RegisterCompany(ViewWithGet):
     def post(self, request):
         self._request = request
         empty_required_fields = [f for f in Company.required_fields if f not in self._request.POST]
@@ -91,7 +87,7 @@ class RegisterCompany(View):
         return fields_from_post
 
 
-class LoginClient(View):
+class LoginClient(ViewWithGet):
     def get(self, request):
         client = Client.objects.get(email='greasha46@gmail.com')
         request.session['client_id'] = client.id
@@ -118,7 +114,7 @@ class LoginClient(View):
         return missed_fields
 
 
-class LoginCompany(View):
+class LoginCompany(ViewWithGet):
     def get(self, request):
         return HttpResponse('wait the post request')
 

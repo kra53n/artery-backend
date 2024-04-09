@@ -14,5 +14,11 @@ urlpatterns = [
     path('register/company/', views.RegisterCompany.as_view(), name='comapny registration'),
 
     path('login/client/', views.LoginClient.as_view(), name='client logining'),
-    path('login/company/', views.LoginCompany.as_view(), name='comapny logining'),
+    path('login/company/', views.LoginCompany.as_view(), name='company logining'),
+
+    # path('product/add/', None, name='add the product'),
+    # path('product/get/', None, name='get the product'),
+
+    # path('order/take/', None, name='take an order'),
+    # path('order/info/', None, name='recieve an information about order'),
 ]

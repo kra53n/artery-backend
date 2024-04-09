@@ -7,9 +7,6 @@ from django.views import View
 from .models import Company, City, Client
 
 
-# TODO: implement email uniquiness checking
-
-
 def index(request):
     return HttpResponse('u r at the index page of the api')
 
@@ -39,14 +36,20 @@ class RegisterClient(View):
     def post(self, request):
         self._request = request
         empty_required_fields = [f for f in Client.required_fields if f not in self._request.POST]
-        if len(empty_required_fields):
+        if empty_required_fields:
             return JsonResponse({'ok': False, 'info': ['unfilled required fields', empty_required_fields]})
+        if self._email_already_exists:
+            return JsonResponse({'ok': False, 'info': f'email({self._request.POST["email"]}) already exists'})
         self._c = Client(**self._fields_from_post)
         try:
             self._c.clean_fields()
         except ValidationError as e:
             return JsonResponse({'ok': False, 'info': e.message_dict})
         return JsonResponse({'ok': True})
+
+    @property
+    def _email_already_exists(self) -> bool:
+        return len(Client.objects.filter(email=self._request.POST['email'])) > 0
 
     @property
     def _fields_from_post(self) -> dict:
@@ -62,14 +65,20 @@ class RegisterCompany(View):
     def post(self, request):
         self._request = request
         empty_required_fields = [f for f in Company.required_fields if f not in self._request.POST]
-        if len(empty_required_fields):
+        if empty_required_fields:
             return JsonResponse({'ok': False, 'info': ['unfilled required fields', empty_required_fields]})
+        if self._email_already_exists:
+            return JsonResponse({'ok': False, 'info': f'email({self._request.POST["email"]}) already exists'})
         self._c = Company(**self._fields_from_post)
         try:
             self._c.clean_fields()
         except ValidationError as e:
             return JsonResponse({'ok': 'False', 'info': e.message_dict})
         return JsonResponse({'ok': True})
+
+    @property
+    def _email_already_exists(self) -> bool:
+        return len(Company.objects.filter(email=self._request.POST['email'])) > 0
 
     @property
     def _fields_from_post(self) -> dict:

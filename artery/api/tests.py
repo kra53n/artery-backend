@@ -1,6 +1,6 @@
 from django.test import Client, TestCase
 
-from .models import City
+from .models import Company, City
 from .models import Client as ClientModel
 
 
@@ -57,6 +57,32 @@ class TestClientRegistration(TestCase):
         json = response.json()
         assert json['ok'] == False and 'phone' in json['info']
 
+    def test_email_collision(self):
+        City(id=1, name='Москва', location_x=0.1, location_y=0.3).save()
+        ClientModel(
+            id=1,
+            surname='asdasd',
+            name='asdasd',
+            phone='75345234644',
+            email='example@gmail.com',
+            password='123',
+            city_id=City.objects.get(id=1)
+        ).save()
+
+        c = Client()
+        response = c.post(
+            '/api/register/client/',
+            {
+                'surname': 'asdf',
+                'name': 'asdf',
+                'phone': '12312345124',
+                'email': 'example@gmail.com',
+                'password': 'smth',
+                'city_id': 1,
+            },
+        )
+        assert response.json()['ok'] == False
+
 
 
 class TestCompanyRegistration(TestCase):
@@ -96,6 +122,27 @@ class TestCompanyRegistration(TestCase):
     def test_incorrect_email(self):
         pass
 
+    def test_email_collision(self):
+        Company(
+            id=1,
+            name='asdasd',
+            phone='75345234644',
+            email='example@gmail.com',
+            password='123',
+        ).save()
+
+        c = Client()
+        response = c.post(
+            '/api/register/company/',
+            {
+                'name': 'asdf',
+                'phone': '12312345124',
+                'email': 'example@gmail.com',
+                'password': 'smth',
+            },
+        )
+        assert response.json()['ok'] == False
+
 
 class TestClientLogining(TestCase):
     def test_correct_info(self):
@@ -119,4 +166,4 @@ class TestClientLogining(TestCase):
                 'password': '123',
             },
         )
-        print(response.content)
+        assert response.json()['ok'] == True

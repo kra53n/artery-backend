@@ -27,8 +27,6 @@ class Company(models.Model):
         }
 
 
-# TODO: rename ForeignKey's
-
 class Client(models.Model):
     ''' Role '''
     surname = models.CharField(max_length=32)
@@ -38,13 +36,13 @@ class Client(models.Model):
     email = models.EmailField(validators=[EmailValidator])
     password = models.CharField(max_length=64, validators=[validate_password])
     image = models.BinaryField(blank=True)
-    city_id = models.ForeignKey(
+    city = models.ForeignKey(
         'City',
         on_delete=models.PROTECT
     )
 
-    required_fields = 'surname', 'name', 'phone', 'email', 'password', 'city_id'
-    all_fields = 'surname', 'name', 'patronymic', 'phone', 'email', 'password', 'image', 'city_id'
+    required_fields = 'surname', 'name', 'phone', 'email', 'password', 'city'
+    all_fields = 'surname', 'name', 'patronymic', 'phone', 'email', 'password', 'image', 'city'
 
     def get_dict(self):
         return {
@@ -55,13 +53,13 @@ class Client(models.Model):
             'phone': self.phone,
             'email': self.email,
             'password': self.password,
-            'city_id': self.city_id.id,
+            'city': self.city.id,
         }
 
 
 class City(models.Model):
     ''' Map element '''
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=32, unique=True)
     location_x = models.FloatField()
     location_y = models.FloatField()
 
@@ -69,42 +67,16 @@ class City(models.Model):
         return f'{self.name} ({self.location_x}, {self.location_y})'
 
 
-class Stock(models.Model):
-    ''' Map element '''
-    name = models.CharField(max_length=32)
-    city_id = models.ForeignKey(
-        'City',
-        on_delete=models.CASCADE
-    ) 
-
-
-class Transit(models.Model):
-    ''' Map element '''
-    city_id = models.ForeignKey(
-        'City',
-        on_delete=models.CASCADE
-    )
-
-
-class PickPoint(models.Model):
-    ''' Map element '''
-    name = models.CharField(max_length=32)
-    city_id = models.ForeignKey(
-        'City',
-        on_delete=models.CASCADE
-    ) 
-    
-
 class Road(models.Model):
     ''' Map element '''
-    city_id_a = models.ForeignKey(
+    city_start = models.ForeignKey(
         'City',
-        related_name='city_road_id_a',
+        related_name='city_road_start',
         on_delete=models.CASCADE
     )
-    city_id_b = models.ForeignKey(
+    city_end = models.ForeignKey(
         'City',
-        related_name='city_road_id_b',
+        related_name='city_road_end',
         on_delete=models.CASCADE
     )
     lenth = models.FloatField()
@@ -128,54 +100,68 @@ class Product(models.Model):
     size = models.FloatField()
     weight = models.FloatField()
     description = models.TextField(blank=True)
+    company = models.ForeignKey(
+        'Company',
+        on_delete=models.CASCADE,
+    )
 
 
 class Order(models.Model):
     ''' Order element '''
-    city_id_a = models.ForeignKey(
+    city_start = models.ForeignKey(
         'City',
-        related_name='city_order_id_a',
+        related_name='city_order_start',
         on_delete=models.PROTECT
     )
-    city_id_b = models.ForeignKey(
+    city_end = models.ForeignKey(
         'City',
-        related_name='city_order_id_b',
+        related_name='city_order_end',
         on_delete=models.PROTECT
     )
+    STATUSES = {
+        'PROCESS': 'in processsing',
+        'PAYED': 'was payed',
+        'WENT': 'went',
+        'ARRIVED': 'arrived',
+        'CLOSED': 'closed',
+        'CANCELED': 'canceled',
+    }
+    statuses = models.CharField(max_length=8, choices=STATUSES)
     
 
-class OrderProduct(models.Model):
+class Order_Product(models.Model):
     ''' Intermediate model '''
-    order_id = models.ForeignKey(
+    order = models.ForeignKey(
         'Order',
         on_delete=models.CASCADE
     )
-    product_id = models.ForeignKey(
+    product = models.ForeignKey(
         'Product',
         on_delete=models.CASCADE
     ) 
-    
+    amount = models.IntegerField()
 
-class CompanyProduct(models.Model):
-    ''' Intermediate model '''
-    company_id = models.ForeignKey(
+class Company_City(models.Model):
+    ''' Intermediate model'''
+    comapny = models.ForeignKey(
         'Company',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
-    product_id = models.ForeignKey(
-        'Product',
-        on_delete=models.CASCADE
+    city = models.ForeignKey(
+        'City',
+        on_delete=models.CASCADE,
     )
-    
+    is_storage = models.BooleanField()
 
-class StockProduct(models.Model):
+
+class Company_City_Product(models.Model):
     ''' Intermediate model '''
-    stock_id = models.ForeignKey(
-        'Stock',
-        on_delete=models.CASCADE
+    company_city = models.ForeignKey(
+        'Company_City',
+        on_delete=models.CASCADE,
     )
-    product_id = models.ForeignKey(
+    product = models.ForeignKey(
         'Product',
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
-    amount = models.PositiveIntegerField()
+    amount = models.IntegerField()

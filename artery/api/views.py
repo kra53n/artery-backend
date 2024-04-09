@@ -1,6 +1,5 @@
 from django.contrib import auth
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
@@ -58,7 +57,7 @@ class RegisterClient(ViewWithGet):
     @property
     def _fields_from_post(self) -> dict:
         fields_from_post = {f: self._request.POST[f] for f in Client.all_fields if f in self._request.POST}
-        fields_from_post['city_id'] = City.objects.get(id=fields_from_post['city_id'])
+        fields_from_post['city'] = City.objects.get(id=fields_from_post['city'])
         return fields_from_post
 
 

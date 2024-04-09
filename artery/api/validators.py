@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+# TODO: validate empty field char
 
 
 def validate_password(value: str):

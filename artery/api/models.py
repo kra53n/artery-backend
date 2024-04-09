@@ -13,6 +13,9 @@ class Company(models.Model):
     phone = models.CharField(max_length=11, validators=[validate_phone])
     description = models.TextField(blank=True)
 
+    required_fields = 'name', 'email', 'password', 'phone'
+    all_fields = 'image', 'name', 'email', 'password', 'phone', 'description'
+
 
 class Client(models.Model):
     ''' Role '''

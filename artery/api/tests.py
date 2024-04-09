@@ -55,3 +55,42 @@ class TestClientRegistration(TestCase):
         )
         json = response.json()
         assert json['ok'] == False and 'phone' in json['info']
+
+
+
+class TestCompanyRegistration(TestCase):
+    def test_correct_info(self):
+        c = Client()
+        response = c.post(
+            '/api/register/company/',
+            {
+                'name': 'ExampleCompany',
+                'email': 'example@gmai.com',
+                'password': 'asdasd',
+                'phone': '31113339955',
+                'description': 'asdfsdf',
+            },
+        )
+        assert response.json()['ok'] == True
+
+    def test_not_full_info(self):
+        c = Client()
+        response = c.post(
+            '/api/register/company/',
+            {
+                'name': 'ExampleCompany',
+                'email': 'example@gmai.com',
+                'password': 'asdasd',
+                'phone': '31113339955',
+            },
+        )
+        assert response.json()['ok'] == True
+
+    def test_incorrect_phone_with_letters(self):
+        pass
+
+    def test_incorrect_phone_with_digits(self):
+        pass
+
+    def test_incorrect_email(self):
+        pass

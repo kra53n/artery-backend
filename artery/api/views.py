@@ -159,7 +159,7 @@ class CompanyCities(ViewWithGet):
     '''
     Send the cities available for the company
     '''
-    def post(self, request):
+    def get(self, request):
         if 'company_id' not in request.session or 'client_id' not in request.session:
             return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
         if 'company_id' not in request.POST:

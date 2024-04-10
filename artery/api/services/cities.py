@@ -1,4 +1,4 @@
-from ..models import Company, Company_City, City
+from ..models import Company, Company_City
 
 
 def get_by_company(company_id: int):

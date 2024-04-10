@@ -3,9 +3,9 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
-from .services import cities
-from .models import Company, City, Client
+from .services import cities, roads
 from .shortcuts import json_response
+from .models import Company, City, Client
 
 
 def index(request):
@@ -151,7 +151,7 @@ class OrderInfo(ViewWithGet):
 
 class CompanyCities(ViewWithGet):
     '''
-    Send the cities available for the company
+    Send available cities for the company
     '''
     def post(self, request):
         company_id = None
@@ -162,6 +162,25 @@ class CompanyCities(ViewWithGet):
         return json_response(
             ok=True,
             info=cities.get_by_company(company_id),
+        ) if company_id else json_response(
+            ok=False,
+            info='company id was not given'
+        )
+
+
+class CompanyRoads(ViewWithGet):
+    '''
+    Send roads of the company
+    '''
+    def post(self, request):
+        company_id = None
+        if 'company_id' in request.session:
+            company_id = request.session['company_id']
+        elif 'company_id' in request.POST:
+            company_id = request.POST['company_id']
+        return json_response(
+            ok=True,
+            info=roads.get_by_company(company_id),
         ) if company_id else json_response(
             ok=False,
             info='company id was not given'

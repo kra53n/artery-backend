@@ -72,6 +72,10 @@ class City(models.Model):
 
 class Road(models.Model):
     ''' Map element '''
+    company = models.ForeignKey(
+        'Company',
+        on_delete=models.CASCADE,
+    )
     city_start = models.ForeignKey(
         'City',
         related_name='city_road_start',

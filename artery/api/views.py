@@ -160,8 +160,8 @@ class CompanyCities(ViewWithGet):
     Send the cities available for the company
     '''
     def post(self, request):
-        if 'company_id' not in request.session or 'client_id' not in request.session:
-            return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
+        if 'company_id' in request.session:
+            return JsonResponse({'ok': True, 'info': cities.get_by_company(request.session['company_id'])})
         if 'company_id' not in request.POST:
             return JsonResponse({'ok': False, 'info': 'company id was not given'})
         return JsonResponse({'ok': True, 'info': cities.get_by_company(request.POST['company_id'])})

@@ -5,6 +5,7 @@ from django.views import View
 
 from .services import cities
 from .models import Company, City, Client
+from .shortcuts import json_response
 
 
 def index(request):
@@ -13,7 +14,7 @@ def index(request):
 
 def logout(request):
     auth.logout(request)
-    return JsonResponse({'ok': True})
+    return json_response(True)
 
 
 class ViewWithGet(View):
@@ -24,16 +25,16 @@ class ViewWithGet(View):
 class Me(ViewWithGet):
     def post(self, request):
         if 'client_id' in request.session:
-            return JsonResponse({
-                'ok': True,
-                'info': Client.objects.get(id=request.session['client_id']).get_dict(),
-            })
+            return json_response(
+                ok=True,
+                info=Client.objects.get(id=request.session['client_id']).get_dict(),
+            )
         if 'company_id' in request.session:
-            return JsonResponse({
-                'ok': True,
-                'info': Company.objects.get(id=request.session['company_id']).get_dict(),
-            })
-        return JsonResponse({'ok': False, 'info': 'the user is not logged in'})
+            return json_response(
+                ok=True,
+                info=Company.objects.get(id=request.session['company_id']).get_dict(),
+            )
+        return json_response(ok=False, info='the user is not logged in')
 
 
 class RegisterClient(ViewWithGet):
@@ -87,12 +88,8 @@ class RegisterCompany(ViewWithGet):
         return fields_from_post
 
 
-class LoginClient(ViewWithGet):
-    def get(self, request):
-        client = Client.objects.get(email='greasha46@gmail.com')
-        request.session['client_id'] = client.id
-        return HttpResponse('wait the post request')
 
+class LoginClient(ViewWithGet):
     def post(self, request):
         self._request = request
         if self._missed_fields:
@@ -115,22 +112,19 @@ class LoginClient(ViewWithGet):
 
 
 class LoginCompany(ViewWithGet):
-    def get(self, request):
-        return HttpResponse('wait the post request')
-
     def post(self, request):
         self._request = request
         if self._missed_fields:
-            return JsonResponse({'ok': False, 'info': ['missed fields', self._missed_fields]})
+            return json_response(ok=False, info=['missed fields', self._missed_fields])
         email = request.POST['email']
         try:
             company = Company.objects.get(email=email)
-        except Client.DoesNotExist:
-            return JsonResponse({'ok': False, 'info': f'company with email({email}) does not exist'})
+        except Company.DoesNotExist:
+            return json_response(ok=False, info=f'company with email({email}) does not exist')
         if company.password != request.POST['password']:
-            return JsonResponse({'ok': False, 'info': f'incorrect login for the email({email})'})
+            return json_response(ok=False, info=f'incorrect login for the email({email})')
         request.session['company_id'] = company.id
-        return JsonResponse({'ok': True})
+        return json_response(True)
 
     @property
     def _missed_fields(self) -> list['str']:
@@ -160,14 +154,15 @@ class CompanyCities(ViewWithGet):
     Send the cities available for the company
     '''
     def post(self, request):
+        company_id = None
         if 'company_id' in request.session:
-            return JsonResponse({
-                'ok': True,
-                'info': cities.get_by_company(request.session['company_id'])
-            })
-        if 'company_id' not in request.POST:
-            return JsonResponse({'ok': False, 'info': 'company id was not given'})
-        return JsonResponse({
-            'ok': True,
-            'info': cities.get_by_company(request.POST['company_id'])
-        })
+            company_id = request.session['company_id']
+        elif 'company_id' in request.POST:
+            company_id = request.POST['company_id']
+        return json_response(
+            ok=True,
+            info=cities.get_by_company(company_id),
+        ) if company_id else json_response(
+            ok=False,
+            info='company id was not given'
+        )

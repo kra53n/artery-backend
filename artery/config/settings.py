@@ -28,8 +28,6 @@ SECRET_KEY = 'django-insecure-d$*%=**wj0*6)a44k9a@fq0#$i+--9r3h9ua)^*6zeo#gde*^f
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
 
 
 # Application definition
@@ -50,7 +48,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

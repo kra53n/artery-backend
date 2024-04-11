@@ -290,13 +290,13 @@ class CompanyRoadsAdd(ViewWithGet):
     def post(
         self,
         _,
-        company_id,
-        city_start_id,
-        city_end_id,
+        company_id: int,
+        city_start_id: int,
+        city_end_id: int,
         transport_type,
-        length,
+        length: float,
         time,
-        cost,
+        cost: float,
     ):
         # TODO: add exceptions for each incorrect field
         return json_response(
@@ -316,7 +316,8 @@ class CompanyRoadsAdd(ViewWithGet):
 class CompanyRoadsDel(ViewWithGet):
     @check_logged_in_under_company
     @check_fields('road_id')
-    def post(self, request, road_id):
+    def post(self, request, road_id: int):
+        # TODO: add exceptions
         return json_response(
             ok=True,
             info=roads.delete(road_id),
@@ -324,16 +325,14 @@ class CompanyRoadsDel(ViewWithGet):
 
 
 class CompanyRoadsEdit(ViewWithGet):
+    '''
+    This view possible to use in one way: change one parameter per request.
+    '''
     @check_logged_in_under_company
-    @check_fields('road_id')
-    def post(self, request, road_id):
-        if 'company_id' not in request.session:
-            return json_response(
-                ok=False,
-                info='the user must be logged in under the company',
-                status=403,
-            )
+    @check_fields('road_id', 'param', 'param_val')
+    def post(self, request, road_id: int, param: str, param_val):
+        # TODO: add exceptions
         return json_response(
             ok=True,
-            info=roads.delete(road_id),
+            info=roads.edit(road_id, param, param_val),
         )

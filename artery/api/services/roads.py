@@ -48,3 +48,9 @@ def add_for_company(
 
 def delete(road_id: int):
     Road.objects.get(id=road_id).delete()
+
+
+def edit(road_id: int, param: str, param_val):
+    road = Road.objects.get(id=road_id)
+    exec(f'road.{param} = {param_val}')
+    road.save()

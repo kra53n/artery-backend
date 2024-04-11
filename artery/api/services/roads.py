@@ -44,3 +44,7 @@ def add_for_company(
         time=time,
         cost=cost,      
     ).save()
+
+
+def delete(road_id: int):
+    Road.objects.get(id=road_id).delete()

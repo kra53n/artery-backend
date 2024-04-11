@@ -311,3 +311,18 @@ class CompanyRoadsAdd(ViewWithGet):
                 cost,
             )
         )
+
+
+class CompanyRoadsDel(ViewWithGet):
+    @check_fields('road_id')
+    def post(self, request, road_id):
+        if 'company_id' not in request.session:
+            return json_response(
+                ok=False,
+                info='the user must be logged in under the company',
+                status=403,
+            )
+        return json_response(
+            ok=True,
+            info=roads.delete(road_id),
+        )

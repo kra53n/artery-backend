@@ -30,6 +30,6 @@ urlpatterns = [
     path('company/cities/edit/', views.CompanyCitiesEdit.as_view(), name='edit the city of the company'),
     path('company/roads/', views.CompanyRoads.as_view(), name='get roads of the company'),
     path('company/roads/add/', views.CompanyRoadsAdd.as_view(), name='add the roads of the company'),
-    # path('company/roads/del/', views.CompanyRoadsDel.as_view(), name='delete the road of the company'),
+    path('company/roads/del/', views.CompanyRoadsDel.as_view(), name='delete the road of the company'),
     # path('company/roads/edit/', views.CompanyRoadsEdit.as_view(), name='edit the road of the company'),
 ]

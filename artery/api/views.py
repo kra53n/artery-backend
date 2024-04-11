@@ -58,6 +58,12 @@ class RegisterClient(ViewWithGet):
             self._c.clean_fields()
         except ValidationError as e:
             return json_response(ok=False, info=e.message_dict, status=400)
+        except City.DoesNotExist:
+            return json_response(
+                ok=False,
+                info='given city does not exist',
+                status=400
+            )
         self._c.save()
         return json_response(True)
 

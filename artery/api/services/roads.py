@@ -1,4 +1,4 @@
-from ..models import Company, Road
+from ..models import Company, City, Road
 
 
 def get_by_company(company_id: int):
@@ -14,3 +14,33 @@ def get_by_company(company_id: int):
         }
         for road in roads
     ]
+
+
+def add_for_company(
+    company_id: int,
+    city_start_id: int,
+    city_end_id: int,
+    transport_type: str,
+    length: float,
+    time,
+    cost: float,
+):
+    company = Company.objects.get(id=company_id)
+    city_start = City.objects.get(id=city_start_id)
+    city_end = City.objects.get(id=city_end_id)
+    roads = Road.objects.filter(company=company, city_start=city_start, city_end=city_end)
+    if roads:
+        # TODO: add raising exception
+        return
+    if transport_type.upper() not in Road.TRANSPORT_TYPE:
+        # TODO: add raising exception
+        return
+    Road(
+        company=company,
+        city_start=city_start,
+        city_end=city_end,
+        transport_type=transport_type,
+        length=length,
+        time=time,
+        cost=cost,      
+    ).save()

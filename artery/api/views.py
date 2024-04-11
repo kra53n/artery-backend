@@ -278,10 +278,36 @@ class CompanyRoads(ViewWithGet):
 
 
 class CompanyRoadsAdd(ViewWithGet):
-    @check_fields('company_id', 'city_start_id', 'city_end_id')
-    def post(self, _, company_id, city_start_id, city_end_id):
+    @check_fields(
+        'company_id',
+        'city_start_id',
+        'city_end_id',
+        'transport_type',
+        'length',
+        'time',
+        'cost',
+    )
+    def post(
+        self,
+        _,
+        company_id,
+        city_start_id,
+        city_end_id,
+        transport_type,
+        length,
+        time,
+        cost,
+    ):
+        # TODO: add exceptions for each incorrect field
         return json_response(
             ok=True,
-            info=roads.get_by_company(company_id),
-            #info=roads.add_for_company(company_id),
+            info=roads.add_for_company(
+                company_id,
+                city_start_id,
+                city_end_id,
+                transport_type,
+                length,
+                time,
+                cost,
+            )
         )

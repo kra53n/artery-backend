@@ -86,7 +86,7 @@ class Road(models.Model):
         related_name='city_road_end',
         on_delete=models.CASCADE
     )
-    lenth = models.FloatField()
+    length = models.FloatField()
     time = models.TimeField()
     cost = models.FloatField()
     TRANSPORT_TYPE = {

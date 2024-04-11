@@ -23,7 +23,11 @@ urlpatterns = [
     # path('order/take/', None, name='take the order'),
 
     path('cities/', views.GetAllCities.as_view(), name='get all cities'),
+
     path('company/cities/', views.CompanyCities.as_view(), name='get available cities for the company'),
+    path('company/cities/add/', views.CompanyCitiesAdd.as_view(), name='add the city for the company'),
+    # path('company/cities/del/', views.CompanyCitiesDel.as_view(), name='delete the city of the company'),
+    # path('company/cities/edit/', views.CompanyCitiesEdit.as_view(), name='edit the city of the company'),
     # path('company/cities/add', views.CompanyCities.as_view(), name='add city for the company'),
     path('company/roads/', views.CompanyRoads.as_view(), name='get roads of the company'),
     # path('company/roads/add', views.CompanyRoads.as_view(), name='get roads of the company'),

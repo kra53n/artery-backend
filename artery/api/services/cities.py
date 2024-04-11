@@ -26,3 +26,13 @@ def get_by_company(company_id: int) -> list[dict]:
         }
         for company_city in company_cities
     ]
+
+
+def add_for_company(city_id: int, company_id: int, is_storage: bool):
+    city = City.objects.get(id=city_id)
+    company = Company.objects.get(id=company_id)
+    company_city = Company_City.objects.filter(company=company)
+    if company_city.filter(city=city):
+        # TODO: find exception for this case and raise it
+        return
+    Company_City(company=company, city=city, is_storage=is_storage).save()

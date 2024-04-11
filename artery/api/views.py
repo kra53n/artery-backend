@@ -158,19 +158,34 @@ class CompanyCities(ViewWithGet):
     '''
     Send available cities for the company
     '''
-    def post(self, request):
-        company_id = None
-        if 'company_id' in request.session:
-            company_id = request.session['company_id']
-        elif 'company_id' in request.POST:
-            company_id = request.POST['company_id']
-        return json_response(
-            ok=True,
-            info=cities.get_by_company(company_id),
-        ) if company_id else json_response(
-            ok=False,
-            info='company id was not given'
-        )
+    def _check_company_id(method):
+        def wrapper(*args):
+            company_id = None
+            request = args[1]
+            if 'company_id' in request.session:
+                company_id = request.session['company_id']
+            # TODO: delete this block of condition due unsecurity
+            elif 'company_id' in request.POST:
+                 company_id = request.POST['company_id']
+            if company_id:
+                return method(*args, company_id)
+            return json_response(ok=False, info='company id was not given')
+        return wrapper
+
+    _check_company_id = staticmethod(_check_company_id)
+
+    @_check_company_id
+    def post(self, _, company_id):
+        return json_response(ok=True, info=cities.get_by_company(company_id))
+
+class CompanyCitiesAdd(ViewWithGet):
+    @CompanyCities._check_company_id
+    def post(self, request, company_id):
+        if 'city_id' in request.POST:
+            is_storage = 'is_storage' in request.POST and request.POST['is_storage'].lower() == 'true'
+            cities.add_for_company(request.POST['city_id'], company_id, is_storage)
+            return json_response(True)
+        return json_response(ok=False, info='city_id was not given')
 
 
 class CompanyRoads(ViewWithGet):

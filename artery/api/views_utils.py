@@ -34,3 +34,26 @@ def check_fields(*field_names: Iterable[int]):
             return method(*args, *field_vals)
         return wrapper
     return decorator
+
+
+def check_logged_in(method, under: str, err_message: str):
+    '''
+    I am going to write the documentation later, maybe
+    '''
+    def decorator(*args):
+        request = args[1]
+        if under not in request.session:
+            return json_response(
+                ok=False,
+                info=err_message,
+                status=403,
+            )
+        return method(*args)
+    return decorator
+
+
+check_logged_in_under_company = lambda method: check_logged_in(
+    method,
+    'company_id',
+    'the user must be logged in under the company'
+)

@@ -6,7 +6,7 @@ from django.views import View
 from .services import cities, roads
 from .shortcuts import json_response
 from .models import Company, Company_City, City, Client
-from .views_utils import check_fields
+from .views_utils import check_fields, check_logged_in_under_company
 
 
 def index(request):
@@ -314,6 +314,17 @@ class CompanyRoadsAdd(ViewWithGet):
 
 
 class CompanyRoadsDel(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields('road_id')
+    def post(self, request, road_id):
+        return json_response(
+            ok=True,
+            info=roads.delete(road_id),
+        )
+
+
+class CompanyRoadsEdit(ViewWithGet):
+    @check_logged_in_under_company
     @check_fields('road_id')
     def post(self, request, road_id):
         if 'company_id' not in request.session:

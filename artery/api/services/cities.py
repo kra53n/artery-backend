@@ -44,3 +44,12 @@ def del_in_company(city_id: int, company_id: int):
     company_city = Company_City.objects.filter(company=company)
     company_city = company_city.get(city=city)
     company_city.delete()
+
+
+def edit_of_company(city_id: int, company_id: int, is_storage: bool):
+    city = City.objects.get(id=city_id)
+    company =  Company.objects.get(id=company_id)
+    company_city = Company_City.objects.filter(company=company)
+    company_city = company_city.get(city=city)
+    company_city.is_storage = is_storage
+    company_city.save()

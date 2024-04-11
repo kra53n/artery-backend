@@ -238,13 +238,35 @@ class CompanyCitiesDel(ViewWithGet):
     @CompanyCities._check_company_id
     def post(self, request, company_id):
         if 'city_id' in request.POST:
+            city_id = request.POST['city_id']
             try:
-                city_id = request.POST['city_id']
                 cities.del_in_company(city_id, company_id)
             except Company_City.DoesNotExist:
                 return json_response(
                     ok=False,
                     info=f'impossible to delete city({city_id})',
+                    status=400,
+                )
+            return json_response(True)
+        return json_response(
+            ok=False,
+            info='city_id was not given',
+            status=400
+        )
+
+
+class CompanyCitiesEdit(ViewWithGet):
+    @CompanyCities._check_company_id
+    def post(self, request, company_id):
+        if 'city_id' in request.POST:
+            is_storage = 'is_storage' in request.POST and request.POST['is_storage'].lower() == 'true'
+            city_id = request.POST['city_id']
+            try:
+                cities.edit_of_company(city_id, company_id, is_storage)
+            except Company_City.DoesNotExist:
+                return json_response(
+                    ok=False,
+                    info=f'impossible to edit city({city_id})',
                     status=400,
                 )
             return json_response(True)

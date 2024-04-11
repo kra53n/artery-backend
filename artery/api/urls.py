@@ -16,12 +16,6 @@ urlpatterns = [
     path('login/client/', views.LoginClient.as_view(), name='client logining'),
     path('login/company/', views.LoginCompany.as_view(), name='company logining'),
 
-    # path('product/', None, name='get the product or products info'),
-    # path('product/add/', None, name='add the product'),
-
-    # path('order/', None, name='get the order info'),
-    # path('order/take/', None, name='take the order'),
-
     path('cities/', views.GetAllCities.as_view(), name='get all cities'),
 
     path('company/cities/', views.CompanyCities.as_view(), name='get available cities for the company'),
@@ -32,4 +26,14 @@ urlpatterns = [
     path('company/roads/add/', views.CompanyRoadsAdd.as_view(), name='add the roads of the company'),
     path('company/roads/del/', views.CompanyRoadsDel.as_view(), name='delete the road of the company'),
     path('company/roads/edit/', views.CompanyRoadsEdit.as_view(), name='edit the road of the company'),
+
+    # company/products/
+    # company/products/add/
+    # company/products/del/
+    # company/products/edit/
+
+    # client/orders/
+    # client/orders/get/
+    # client/orders/take/
+    # client/orders/edit/
 ]

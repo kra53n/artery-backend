@@ -182,22 +182,6 @@ class LoginCompany(ViewWithGet):
         return missed_fields
 
 
-class ProductAdd(ViewWithGet):
-    pass
-
-
-class ProductGet(ViewWithGet):
-    pass
-
-
-class OrderTake(ViewWithGet):
-    pass
-
-
-class OrderInfo(ViewWithGet):
-    pass
-
-
 class GetAllCities(ViewWithGet):
     def get(self, _):
         return json_response(ok=True, info=cities.get_all())

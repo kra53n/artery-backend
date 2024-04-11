@@ -3,11 +3,14 @@ from .shortcuts import json_response
 
 def check_field(field_name: str):
     '''
-    `@check_field(field_name)` decorator applyied for methods with
-    (self, request) arguments. The output value of `@check_field`
-    will be paste to the `method` as the third argument.
+        `@check_field(field_name)` decorator applyied for methods with
+    (self, request) arguments. The output value of `@check_field` will
+    be paste to the `method` as the third argument.
+        Works only with POST request because GET request can not send any
+    forms data.
 
     Usage example may be seen in artery/api/views.py/CompanyCities class
+
     '''
     def decorator(method):
         def wrapper(*args):

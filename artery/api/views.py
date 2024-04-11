@@ -208,7 +208,7 @@ class CompanyCities(ViewWithGet):
     Send available cities for the company
     '''
     @check_field('company_id')
-    def get(self, _, company_id):
+    def post(self, _, company_id):
         return json_response(ok=True, info=cities.get_by_company(company_id))
 
 
@@ -269,17 +269,9 @@ class CompanyRoads(ViewWithGet):
     '''
     Send roads of the company
     '''
-    def post(self, request):
-        company_id = None
-        if 'company_id' in request.session:
-            company_id = request.session['company_id']
-        elif 'company_id' in request.POST:
-            company_id = request.POST['company_id']
+    @check_field('company_id')
+    def post(self, _, company_id):
         return json_response(
             ok=True,
             info=roads.get_by_company(company_id),
-        ) if company_id else json_response(
-            ok=False,
-            info='company id was not given',
-            status=400,
         )

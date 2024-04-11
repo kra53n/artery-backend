@@ -149,6 +149,11 @@ class OrderInfo(ViewWithGet):
     pass
 
 
+class GetAllCities(ViewWithGet):
+    def get(self, _):
+        return json_response(ok=True, info=cities.get_all())
+
+
 class CompanyCities(ViewWithGet):
     '''
     Send available cities for the company

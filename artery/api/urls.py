@@ -22,6 +22,9 @@ urlpatterns = [
     # path('order/', None, name='get the order info'),
     # path('order/take/', None, name='take the order'),
 
+    path('cities/', views.GetAllCities.as_view(), name='get all cities'),
     path('company/cities/', views.CompanyCities.as_view(), name='get available cities for the company'),
+    # path('company/cities/add', views.CompanyCities.as_view(), name='add city for the company'),
     path('company/roads/', views.CompanyRoads.as_view(), name='get roads of the company'),
+    # path('company/roads/add', views.CompanyRoads.as_view(), name='get roads of the company'),
 ]

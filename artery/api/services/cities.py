@@ -1,7 +1,19 @@
-from ..models import Company, Company_City
+from ..models import Company, Company_City, City
 
 
-def get_by_company(company_id: int):
+def get_all() -> list[dict]:
+    return [
+        {
+            'city_id': city.id,
+            'name': city.name,
+            'x': city.location_x,
+            'y': city.location_y,
+        }
+        for city in City.objects.all()
+    ]
+
+
+def get_by_company(company_id: int) -> list[dict]:
     company = Company.objects.get(id=company_id)
     company_cities = Company_City.objects.filter(company_id=company)
     return [

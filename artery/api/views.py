@@ -58,6 +58,7 @@ class RegisterClient(ViewWithGet):
             self._c.clean_fields()
         except ValidationError as e:
             return json_response(ok=False, info=e.message_dict, status=400)
+        self._c.save()
         return json_response(True)
 
     @property
@@ -80,7 +81,7 @@ class RegisterCompany(ViewWithGet):
                 ok=False,
                 info=['unfilled required fields', empty_required_fields],
                 status=400,
-                )
+            )
         if self._email_already_exists:
             return json_response(
                 ok=False,
@@ -92,6 +93,7 @@ class RegisterCompany(ViewWithGet):
             self._c.clean_fields()
         except ValidationError as e:
             return json_response(ok=False, info=e.message_dict, status=400)
+        self._c.save()
         return json_response(True)
 
     @property

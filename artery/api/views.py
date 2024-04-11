@@ -5,7 +5,7 @@ from django.views import View
 
 from .services import cities, roads
 from .shortcuts import json_response
-from .models import Company, City, Client
+from .models import Company, Company_City, City, Client
 
 
 def index(request):
@@ -184,6 +184,18 @@ class CompanyCitiesAdd(ViewWithGet):
         if 'city_id' in request.POST:
             is_storage = 'is_storage' in request.POST and request.POST['is_storage'].lower() == 'true'
             cities.add_for_company(request.POST['city_id'], company_id, is_storage)
+            return json_response(True)
+        return json_response(ok=False, info='city_id was not given')
+
+
+class CompanyCitiesDel(ViewWithGet):
+    @CompanyCities._check_company_id
+    def post(self, request, company_id):
+        if 'city_id' in request.POST:
+            try:
+                cities.del_in_company(request.POST['city_id'], company_id)
+            except Company_City.DoesNotExist:
+                return json_response(False)
             return json_response(True)
         return json_response(ok=False, info='city_id was not given')
 

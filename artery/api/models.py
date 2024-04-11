@@ -161,6 +161,9 @@ class Company_City(models.Model):
     )
     is_storage = models.BooleanField()
 
+    def __str__(self):
+        return f'Company_City(id: {self.id}, company: {self.company}, city: {self.city})'
+
 
 class Company_City_Product(models.Model):
     ''' Intermediate model '''

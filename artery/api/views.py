@@ -221,7 +221,7 @@ class CompanyCities(ViewWithGet):
     _check_company_id = staticmethod(_check_company_id)
 
     @_check_company_id
-    def post(self, _, company_id):
+    def get(self, _, company_id):
         return json_response(ok=True, info=cities.get_by_company(company_id))
 
 class CompanyCitiesAdd(ViewWithGet):

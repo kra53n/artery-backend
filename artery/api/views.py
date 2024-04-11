@@ -6,7 +6,7 @@ from django.views import View
 from .services import cities, roads
 from .shortcuts import json_response
 from .models import Company, Company_City, City, Client
-from .views_utils import check_field
+from .views_utils import check_fields
 
 
 def index(request):
@@ -207,13 +207,13 @@ class CompanyCities(ViewWithGet):
     '''
     Send available cities for the company
     '''
-    @check_field('company_id')
+    @check_fields('company_id')
     def post(self, _, company_id):
         return json_response(ok=True, info=cities.get_by_company(company_id))
 
 
 class CompanyCitiesAdd(ViewWithGet):
-    @check_field('company_id')
+    @check_fields('company_id')
     def post(self, request, company_id):
         if 'city_id' in request.POST:
             is_storage = 'is_storage' in request.POST and request.POST['is_storage'].lower() == 'true'
@@ -223,7 +223,7 @@ class CompanyCitiesAdd(ViewWithGet):
 
 
 class CompanyCitiesDel(ViewWithGet):
-    @check_field('company_id')
+    @check_fields('company_id')
     def post(self, request, company_id):
         if 'city_id' in request.POST:
             city_id = request.POST['city_id']
@@ -244,7 +244,7 @@ class CompanyCitiesDel(ViewWithGet):
 
 
 class CompanyCitiesEdit(ViewWithGet):
-    @check_field('company_id')
+    @check_fields('company_id')
     def post(self, request, company_id):
         if 'city_id' in request.POST:
             is_storage = 'is_storage' in request.POST and request.POST['is_storage'].lower() == 'true'
@@ -269,9 +269,19 @@ class CompanyRoads(ViewWithGet):
     '''
     Send roads of the company
     '''
-    @check_field('company_id')
+    @check_fields('company_id')
     def post(self, _, company_id):
         return json_response(
             ok=True,
             info=roads.get_by_company(company_id),
+        )
+
+
+class CompanyRoadsAdd(ViewWithGet):
+    @check_fields('company_id', 'city_start_id', 'city_end_id')
+    def post(self, _, company_id, city_start_id, city_end_id):
+        return json_response(
+            ok=True,
+            info=roads.get_by_company(company_id),
+            #info=roads.add_for_company(company_id),
         )

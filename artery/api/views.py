@@ -23,7 +23,7 @@ class ViewWithGet(View):
 
 
 class Me(ViewWithGet):
-    def post(self, request):
+    def get(self, request):
         if 'client_id' in request.session:
             return json_response(
                 ok=True,
@@ -34,7 +34,7 @@ class Me(ViewWithGet):
                 ok=True,
                 info=Company.objects.get(id=request.session['company_id']).get_dict(),
             )
-        return json_response(ok=False, info='the user is not logged in')
+        return json_response(ok=False, info='the user is not logged in', status=401)
 
 
 class RegisterClient(ViewWithGet):
@@ -42,15 +42,23 @@ class RegisterClient(ViewWithGet):
         self._request = request
         empty_required_fields = [f for f in Client.required_fields if f not in self._request.POST]
         if empty_required_fields:
-            return JsonResponse({'ok': False, 'info': ['unfilled required fields', empty_required_fields]})
+            return json_response(
+                ok=False,
+                info=['unfilled required fields', empty_required_fields],
+                status=400,
+            )
         if self._email_already_exists:
-            return JsonResponse({'ok': False, 'info': f'email({self._request.POST["email"]}) already exists'})
+            return json_response(
+                ok=False,
+                info=f'email({self._request.POST["email"]}) already exists',
+                status=400,
+            )
         self._c = Client(**self._fields_from_post)
         try:
             self._c.clean_fields()
         except ValidationError as e:
-            return JsonResponse({'ok': False, 'info': e.message_dict})
-        return JsonResponse({'ok': True})
+            return json_response(ok=False, info=e.message_dict, status=400)
+        return json_response(True)
 
     @property
     def _email_already_exists(self) -> bool:
@@ -68,15 +76,23 @@ class RegisterCompany(ViewWithGet):
         self._request = request
         empty_required_fields = [f for f in Company.required_fields if f not in self._request.POST]
         if empty_required_fields:
-            return JsonResponse({'ok': False, 'info': ['unfilled required fields', empty_required_fields]})
+            return json_response(
+                ok=False,
+                info=['unfilled required fields', empty_required_fields],
+                status=400,
+                )
         if self._email_already_exists:
-            return JsonResponse({'ok': False, 'info': f'email({self._request.POST["email"]}) already exists'})
+            return json_response(
+                ok=False,
+                info=f'email({self._request.POST["email"]}) already exists',
+                status=400,
+            )
         self._c = Company(**self._fields_from_post)
         try:
             self._c.clean_fields()
         except ValidationError as e:
-            return JsonResponse({'ok': 'False', 'info': e.message_dict})
-        return JsonResponse({'ok': True})
+            return json_response(ok=False, info=e.message_dict, status=400)
+        return json_response(True)
 
     @property
     def _email_already_exists(self) -> bool:
@@ -93,16 +109,28 @@ class LoginClient(ViewWithGet):
     def post(self, request):
         self._request = request
         if self._missed_fields:
-            return JsonResponse({'ok': False, 'info': ['missed fields', self._missed_fields]})
+            return json_response(
+                ok=False,
+                info=['missed fields', self._missed_fields],
+                status=400,
+            )
         email = request.POST['email']
         try:
             client = Client.objects.get(email=email)
         except Client.DoesNotExist:
-            return JsonResponse({'ok': False, 'info': f'client with email({email}) does not exist'})
+            return json_response(
+                ok=False,
+                info=f'client with email({email}) does not exist',
+                status=400,
+            )
         if client.password != request.POST['password']:
-            return JsonResponse({'ok': False, 'info': f'incorrect login for the email({email})'})
+            return json_response(
+                ok=False,
+                info=f'incorrect password for the email({email})',
+                status=400,
+            )
         request.session['client_id'] = client.id
-        return JsonResponse({'ok': True})
+        return json_response(True)
 
     @property
     def _missed_fields(self) -> list['str']:
@@ -115,14 +143,26 @@ class LoginCompany(ViewWithGet):
     def post(self, request):
         self._request = request
         if self._missed_fields:
-            return json_response(ok=False, info=['missed fields', self._missed_fields])
+            return json_response(
+                ok=False,
+                info=['missed fields', self._missed_fields],
+                status=400
+            )
         email = request.POST['email']
         try:
             company = Company.objects.get(email=email)
         except Company.DoesNotExist:
-            return json_response(ok=False, info=f'company with email({email}) does not exist')
+            return json_response(
+                ok=False,
+                info=f'company with email({email}) does not exist',
+                status=400,
+            )
         if company.password != request.POST['password']:
-            return json_response(ok=False, info=f'incorrect login for the email({email})')
+            return json_response(
+                ok=False,
+                info=f'incorrect password for the email({email})',
+                status=400,
+            )
         request.session['company_id'] = company.id
         return json_response(True)
 
@@ -169,7 +209,11 @@ class CompanyCities(ViewWithGet):
                  company_id = request.POST['company_id']
             if company_id:
                 return method(*args, company_id)
-            return json_response(ok=False, info='company id was not given')
+            return json_response(
+                ok=False,
+                info='company id was not given',
+                status=400,
+            )
         return wrapper
 
     _check_company_id = staticmethod(_check_company_id)
@@ -193,11 +237,20 @@ class CompanyCitiesDel(ViewWithGet):
     def post(self, request, company_id):
         if 'city_id' in request.POST:
             try:
-                cities.del_in_company(request.POST['city_id'], company_id)
+                city_id = request.POST['city_id']
+                cities.del_in_company(city_id, company_id)
             except Company_City.DoesNotExist:
-                return json_response(False)
+                return json_response(
+                    ok=False,
+                    info=f'impossible to delete city({city_id})',
+                    status=400,
+                )
             return json_response(True)
-        return json_response(ok=False, info='city_id was not given')
+        return json_response(
+            ok=False,
+            info='city_id was not given',
+            status=400
+        )
 
 
 class CompanyRoads(ViewWithGet):
@@ -215,5 +268,6 @@ class CompanyRoads(ViewWithGet):
             info=roads.get_by_company(company_id),
         ) if company_id else json_response(
             ok=False,
-            info='company id was not given'
+            info='company id was not given',
+            status=400,
         )

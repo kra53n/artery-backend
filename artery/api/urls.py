@@ -18,6 +18,7 @@ urlpatterns = [
 
     path('cities/', views.GetAllCities.as_view(), name='get all cities'),
 
+    path('companies/', views.Companies.as_view(), name='get all companies'),
     path('company/cities/', views.CompanyCities.as_view(), name='get available cities for the company'),
     path('company/cities/add/', views.CompanyCitiesAdd.as_view(), name='add the city for the company'),
     path('company/cities/del/', views.CompanyCitiesDel.as_view(), name='delete the city of the company'),

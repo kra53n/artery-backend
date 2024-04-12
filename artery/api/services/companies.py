@@ -4,7 +4,7 @@ from ..models import Company
 def get_info_by_company(company_id: int) -> dict:
     company = Company.objects.get(id=company_id)
     return {
-        #'image': company.image,
+        'image': company.image,
         'name': company.name,
         'email': company.email,
         'phone': company.phone,

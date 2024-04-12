@@ -9,6 +9,7 @@ def get_by_client(client_id: int):
     orders = Order.objects.filter(client=client)
     return [
         {
+            'image': order.image,
             'city_start_id': order.city_start.id,
             'city_end_id': order.city_end.id,
             'status': order.status,

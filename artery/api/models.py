@@ -6,7 +6,7 @@ from .validators import validate_password, validate_phone
 
 class Company(models.Model):
     ''' Role '''
-    image = models.BinaryField(blank=True)
+    image = models.CharField(max_length=256, blank=True)
     name = models.CharField(max_length=32)
     email = models.EmailField(validators=[EmailValidator])
     password = models.CharField(max_length=64, validators=[validate_password])
@@ -20,6 +20,7 @@ class Company(models.Model):
         return {
             'who': 'company',
             'id': self.id,
+            'image': self.image,
             'name': self.name,
             'email': self.email,
             'password': self.password,
@@ -36,7 +37,7 @@ class Client(models.Model):
     phone = models.CharField(max_length=11, validators=[validate_phone])
     email = models.EmailField(validators=[EmailValidator])
     password = models.CharField(max_length=64, validators=[validate_password])
-    image = models.BinaryField(blank=True)
+    image = models.CharField(max_length=256, blank=True)
     city = models.ForeignKey(
         'City',
         on_delete=models.PROTECT
@@ -49,6 +50,7 @@ class Client(models.Model):
         return {
             'who': 'client',
             'id': self.id,
+            'image': self.image,
             'surname': self.surname,
             'name': self.name,
             'patronymic': self.patronymic,
@@ -100,7 +102,7 @@ class Road(models.Model):
 
 class Product(models.Model):
     ''' Order element '''
-    image = models.BinaryField(blank=True)
+    image = models.CharField(max_length=256, blank=True)
     name = models.CharField(max_length=32)
     cost = models.FloatField()
     size = models.FloatField()

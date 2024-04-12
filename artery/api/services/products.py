@@ -3,7 +3,7 @@ from ..models import Company, Product
 
 def _get_dict(product: Product):
     return {
-        #'image': product.image,
+        'image': product.image,
         'name': product.name,
         'cost': product.cost,
         'size': product.size,

@@ -35,6 +35,7 @@ urlpatterns = [
     path('company/products/edit/', views.CompanyProductsEdit.as_view(), name='edit the product of the company'),
 
     path('client/city/', views.ClientChangeCity.as_view(), name='change city of the client'),
+    path('client/cities/', views.ClientGetAvailableCities.as_view(), name='get available company cities'),
     path('client/orders/', views.ClientOrders.as_view(), name='get orders of the client'),
     path('client/orders/order/', views.ClientOrdersOrder.as_view(), name='take order under the client'),
     path('client/orders/make_route/', views.ClientOrdersMakeRoute.as_view(), name='make route'),

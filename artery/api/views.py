@@ -416,6 +416,15 @@ class ClientChangeCity(ViewWithGet):
         )
 
 
+class ClientGetAvailableCities(ViewWithGet):
+    @check_fields('company_id')
+    def post(self, _, company_id):
+        return json_response(
+            ok=True,
+            info=clients.get_available_cityies_in_company(company_id),
+        )
+
+
 class ClientOrders(ViewWithGet):
     @check_logged_in_under_client
     @check_fields('client_id')

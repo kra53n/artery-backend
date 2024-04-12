@@ -385,6 +385,7 @@ class CompanyProductsEdit(ViewWithGet):
         return json_response(
             ok=True,
             info=products.edit(product_id, param, param_val)
+        )
 
 
 class ClientChangeCity(ViewWithGet):

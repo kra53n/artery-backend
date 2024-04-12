@@ -17,6 +17,11 @@ def get(product_id: int):
     return _get_dict(product)
 
 
+def get_all():
+    products = Product.objects.all()
+    return [_get_dict(product) for product in products]
+
+
 def get_by_company(company_id: int):
     company = Company.objects.get(id=company_id)
     products = Product.objects.filter(company=company)

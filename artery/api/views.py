@@ -468,3 +468,11 @@ class Product(ViewWithGet):
             ok=True,
             info=products.get(product_id),
         )
+
+
+class Products(ViewWithGet):
+    def get(self, _):
+        return json_response(
+            ok=True,
+            info=products.get_all(),
+        )

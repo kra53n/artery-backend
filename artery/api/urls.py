@@ -41,6 +41,7 @@ urlpatterns = [
     path('client/orders/make_route/', views.ClientOrdersMakeRoute.as_view(), name='make route'),
 
     path('product/', views.Product.as_view(), name='get product info'),
+    path('products/', views.Products.as_view(), name='get all products'),
 
     # this api's looks pointless
     # client/orders/get/

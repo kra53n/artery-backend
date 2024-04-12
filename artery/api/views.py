@@ -192,7 +192,7 @@ class Companies(ViewWithGet):
         return json_response(ok=True, info=companies.get_all())
 
 
-class Company(ViewWithGet):
+class CompanyGetInfo(ViewWithGet):
     @check_fields('company_id')
     def post(self, _, company_id):
         return json_response(

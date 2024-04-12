@@ -28,7 +28,14 @@ SECRET_KEY = 'django-insecure-d$*%=**wj0*6)a44k9a@fq0#$i+--9r3h9ua)^*6zeo#gde*^f
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL = DEBUG
+# CORS_ORIGIN_ALLOW_ALL = DEBUG
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ('Upgrade-Insecure-Requests',)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
 
 
 # Application definition

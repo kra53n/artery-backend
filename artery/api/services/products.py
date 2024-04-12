@@ -10,6 +10,7 @@ def _get_dict(product: Product):
         'size': product.size,
         'weight': product.weight,
         'description': product.description,
+        'company_id': product.company.id,
     }
 
 

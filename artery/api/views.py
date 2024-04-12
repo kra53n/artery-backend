@@ -330,3 +330,21 @@ class CompanyProducts(ViewWithGet):
             ok=True,
             info=products.get_by_company(company_id),
         )
+    
+
+class CompanyProductsAdd(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields('company_id', 'name', 'cost', 'size', 'weight', 'description')
+    def post(self, _, company_id, name, cost, size, weight, description):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=products.add_to_company(
+                company_id,
+                name,
+                cost,
+                size,
+                weight,
+                description,
+            )
+        )

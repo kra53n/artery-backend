@@ -28,7 +28,7 @@ urlpatterns = [
     path('company/roads/edit/', views.CompanyRoadsEdit.as_view(), name='edit the road of the company'),
 
     path('company/products/', views.CompanyProducts.as_view(), name='get products of the company'),
-    # path('company/products/add/', views.CompanyProductsAdd.as_view(), name='add the product to the company'),
+    path('company/products/add/', views.CompanyProductsAdd.as_view(), name='add the product to the company'),
     # path('company/products/del/', views.CompanyProductsDel.as_view(), name='del the procut in the company'),
     # path('company/products/edit/', views.CompnayProductsEdit.as_view(), name='edit the product of the company'),
 

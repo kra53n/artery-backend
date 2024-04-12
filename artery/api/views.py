@@ -192,13 +192,25 @@ class Companies(ViewWithGet):
         return json_response(ok=True, info=companies.get_all())
 
 
+class Company(ViewWithGet):
+    @check_fields('company_id')
+    def post(self, _, company_id):
+        return json_response(
+            ok=True,
+            info=companies.get_info_by_company(company_id)
+        )
+
+
 class CompanyCities(ViewWithGet):
     '''
     Send available cities for the company
     '''
     @check_fields('company_id')
     def post(self, _, company_id):
-        return json_response(ok=True, info=cities.get_by_company(company_id))
+        return json_response(
+            ok=True,
+            info=cities.get_by_company(company_id)
+        )
 
 
 class CompanyCitiesAdd(ViewWithGet):

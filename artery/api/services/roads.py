@@ -3,6 +3,7 @@ from ..models import Company, City, Road
 
 def get_as_dict(road: Road):
     return {
+        'road_id': road.id,
         'city_start_id': road.city_start.id,
         'city_end_id': road.city_end.id,
         'length': road.length,

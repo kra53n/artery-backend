@@ -361,7 +361,7 @@ class CompanyProductsAdd(ViewWithGet):
     )
     def post(
         self,
-        _,
+        request,
         company_id: int,
         name: str,
         cost: float,
@@ -369,11 +369,12 @@ class CompanyProductsAdd(ViewWithGet):
         weight: float,
         description: str
     ):
-        # TODO: add exceptions
+        image = request.POST.get('image')
         return json_response(
             ok=True,
             info=products.add_to_company(
                 company_id,
+                image,
                 name,
                 cost,
                 size,

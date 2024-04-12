@@ -29,16 +29,27 @@ def get_by_company(company_id: int):
     return [_get_dict(product) for product in products]
 
 
-def add_to_company(company_id: int, name: str, cost: float, size: float, weight: float, description: str):
+def add_to_company(
+    company_id: int,
+    image: None | str,
+    name: str,
+    cost: float,
+    size: float,
+    weight: float,
+    description: str
+):
     company = Company.objects.get(id=company_id)
-    Product(
-        company=company,
-        name=name,
-        cost=cost,
-        size=size,
-        weight=weight,
-        description=description
-    ).save()
+    vals = {
+        'company': company,
+        'name': name,
+        'cost': cost,
+        'size': size,
+        'weight': weight,
+        'description': description
+    }
+    if image:
+        vals['image'] = image
+    Product(**vals).save()
 
 
 def delete(product_id: int):

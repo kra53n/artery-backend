@@ -27,3 +27,13 @@ def add_to_company(company_id: int, name: str, cost: float, size: float, weight:
         weight=weight,
         description=description
     ).save()
+
+
+def delete(product_id: int):
+    Product.objects.get(id=product_id).delete()
+
+
+def edit(product_id: int, param: str, param_val):
+    product = Product.objects.get(id=product_id)
+    exec(f'product.{param} = {param_val}')
+    product.save()

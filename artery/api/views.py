@@ -334,8 +334,24 @@ class CompanyProducts(ViewWithGet):
 
 class CompanyProductsAdd(ViewWithGet):
     @check_logged_in_under_company
-    @check_fields('company_id', 'name', 'cost', 'size', 'weight', 'description')
-    def post(self, _, company_id, name, cost, size, weight, description):
+    @check_fields(
+        'company_id',
+        'name',
+        'cost',
+        'size',
+        'weight',
+        'description'
+    )
+    def post(
+        self,
+        _,
+        company_id: int,
+        name: str,
+        cost: float,
+        size: float,
+        weight: float,
+        description: str
+    ):
         # TODO: add exceptions
         return json_response(
             ok=True,
@@ -348,3 +364,15 @@ class CompanyProductsAdd(ViewWithGet):
                 description,
             )
         )
+
+        
+class CompanyProductsDel(ViewWithGet):
+    #@check_logged_in_under_company
+    @check_fields('product_id')
+    def post(self, _, product_id: int):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=products.delete(product_id)
+        )
+        

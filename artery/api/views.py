@@ -3,10 +3,10 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
-from .services import cities, products, roads
+from .services import cities, clients, products, roads
 from .shortcuts import json_response
 from .models import Company, Company_City, City, Client
-from .views_utils import check_fields, check_logged_in_under_company
+from .views_utils import check_fields, check_logged_in_under_company, check_logged_in_under_client
 
 
 def index(request):
@@ -329,4 +329,15 @@ class CompanyProducts(ViewWithGet):
         return json_response(
             ok=True,
             info=products.get_by_company(company_id),
+        )
+
+
+class ClientChangeCity(ViewWithGet):
+    @check_logged_in_under_client
+    @check_fields('client_id', 'city_id')
+    def post(self, _, client_id, city_id):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=clients.change_city(client_id, city_id)
         )

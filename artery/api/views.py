@@ -443,14 +443,18 @@ class ClientOrdersOrder(ViewWithGet):
     
 class ClientOrdersMakeRoute(ViewWithGet):
     @check_logged_in_under_client
-    @check_fields('client_id')
-    def post(sefl, _, client_id):
-        pass
+    @check_fields('client_id', 'product_id', 'by')
+    def post(self, _, client_id, product_id, by):
+        print(client_id)
+        return json_response(
+            ok=True,
+            info=orders.give_route(client_id, product_id, by),
+        )
 
 
 class Product(ViewWithGet):
     @check_fields('product_id')
-    def post(sefl, _, product_id):
+    def post(self, _, product_id):
         return json_response(
             ok=True,
             info=products.get(product_id),

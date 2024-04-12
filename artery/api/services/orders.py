@@ -1,4 +1,7 @@
-from ..models import Client, Order, Order_Product, City, Product
+from .graph import make_route
+from .roads import get_as_dict as get_as_dict_roads
+
+from ..models import Client, Order, Order_Product, Company_City, City, Product, Road
 
 
 def get_by_client(client_id: int):
@@ -34,3 +37,18 @@ def take_order(client_id: int, city_start_id: int, product_id: int):
         # TODO: add amount processing in future
         amount=0,
     ).save()
+
+
+# TODO: add by param in futer
+# `by` can be 'length', 'cost', etc
+def give_route(client_id: int, product_id: int, by: str):
+    client = Client.objects.get(id=client_id)
+    product = Product.objects.get(id=product_id)
+    company = product.company
+    company_cities = Company_City.objects.filter(company=company)
+
+    roads = [get_as_dict_roads(r) for r in Road.objects.filter(company=company)]
+    cities = [cc.id for cc in company_cities]
+    storage_cities = [cc.id for cc in company_cities if cc.is_storage]
+    client_city = client.city.id
+    return make_route(cities, roads, storage_cities, client_city, by)

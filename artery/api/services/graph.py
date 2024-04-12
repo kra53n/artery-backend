@@ -116,11 +116,9 @@ class Graph:
             min_dist = float("inf")
             min_node = None
             for n in queue: 
-                print(n.city_id, '--', dist_to[n][0], end='|')
                 if dist_to[n][0] < min_dist and n not in seen:
                     min_dist = dist_to[n][0]
                     min_node = n
-            print()
             queue.remove(min_node)
             seen.add(min_node)
             connections = self.connections_from(min_node)

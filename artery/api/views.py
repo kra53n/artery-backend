@@ -367,7 +367,7 @@ class CompanyProductsAdd(ViewWithGet):
 
         
 class CompanyProductsDel(ViewWithGet):
-    #@check_logged_in_under_company
+    @check_logged_in_under_company
     @check_fields('product_id')
     def post(self, _, product_id: int):
         # TODO: add exceptions
@@ -376,3 +376,13 @@ class CompanyProductsDel(ViewWithGet):
             info=products.delete(product_id)
         )
         
+
+class CompanyProductsEdit(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields('product_id', 'param', 'param_val')
+    def post(self, _, product_id: int, param: str, param_val):
+        # TODO: add exeptions
+        return json_response(
+            ok=True,
+            info=products.edit(product_id, param, param_val)
+        )

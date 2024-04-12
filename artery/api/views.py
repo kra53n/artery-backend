@@ -412,12 +412,7 @@ class ClientOrders(ViewWithGet):
 class ClientOrdersOrder(ViewWithGet):
     #@check_logged_in_under_client
     @check_fields('client_id', 'city_start_id')
-    def post(
-        self,
-        _,
-        client_id: int,
-        city_start_id: int,
-    ):
+    def post(self, _, client_id, city_start_id: int):
         # TODO: add exceptions
         return json_response(
             ok=True,

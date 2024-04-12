@@ -125,7 +125,7 @@ class Order(models.Model):
         on_delete=models.PROTECT
     )
     STATUSES = {
-        'PROCESS': 'in processsing',
+        'PROCESS': 'in processing',
         'PAYED': 'was payed',
         'WENT': 'went',
         'ARRIVED': 'arrived',

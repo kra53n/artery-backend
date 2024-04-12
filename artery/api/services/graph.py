@@ -104,7 +104,7 @@ class Graph:
             if node.city_id == id:
                 return node
 
-    def dijkstra(self, start: Node, end: Node, property: str) -> Path:
+    def dijkstra(self, start: Node, end: Node, property: str) -> list[int]:
         dist_to = { node: 0 for node in self.nodes }
         for i in dist_to:
             dist_to[i] = [float('inf'), [start.city_id]]
@@ -133,7 +133,7 @@ class Graph:
         
         for key in dist_to:
             if key == end:
-                return Path(dist_to[key][0], dist_to[key][1])
+                return dist_to[key][1]
 
 def test_graph():
     a = Node("A") #34

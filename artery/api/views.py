@@ -427,7 +427,22 @@ class ClientOrders(ViewWithGet):
 
 
 class ClientOrdersOrder(ViewWithGet):
+    #@check_logged_in_under_client
+    @check_fields('client_id', 'city_start_id', 'product_id')
+    def post(self, _, client_id, city_start_id, product_id):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=orders.take_order(
+                client_id,
+                city_start_id,
+                product_id,
+            )
+        )
+
+    
+class ClientOrdersMakeRoute(ViewWithGet):
     @check_logged_in_under_client
-    @check_fields('client_id', 'city_start_id', 'city_end_id')
-    def post(self, _, client_id, city_start_id, city_end_id):
+    @check_fields('client_id')
+    def post(sefl, _, client_id):
         pass

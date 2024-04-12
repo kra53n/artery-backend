@@ -19,6 +19,7 @@ class Company(models.Model):
     def get_dict(self):
         return {
             'who': 'company',
+            'id': self.id,
             'name': self.name,
             'email': self.email,
             'password': self.password,
@@ -47,6 +48,7 @@ class Client(models.Model):
     def get_dict(self):
         return {
             'who': 'client',
+            'id': self.id,
             'surname': self.surname,
             'name': self.name,
             'patronymic': self.patronymic,
@@ -55,9 +57,6 @@ class Client(models.Model):
             'password': self.password,
             'city': self.city.id,
         }
-
-        def __str__(self):
-            return f''
 
 
 class City(models.Model):
@@ -133,7 +132,11 @@ class Order(models.Model):
         'CLOSED': 'closed',
         'CANCELED': 'canceled',
     }
-    statuses = models.CharField(max_length=8, choices=STATUSES)
+    status = models.CharField(max_length=8, choices=STATUSES)
+    client = models.ForeignKey(
+        'Client',
+        on_delete=models.DO_NOTHING,
+    )
     
 
 class Order_Product(models.Model):

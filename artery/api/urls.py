@@ -32,8 +32,8 @@ urlpatterns = [
     path('company/products/del/', views.CompanyProductsDel.as_view(), name='del the procut in the company'),
     path('company/products/edit/', views.CompanyProductsEdit.as_view(), name='edit the product of the company'),
 
-    # path('client/city/', views.ClientChangeCity.as_view(), name='change city of the client'),
-    # path('client/orders/', views.ClientOrders.as_view(), name='get orders of the client'),
+    path('client/city/', views.ClientChangeCity.as_view(), name='change city of the client'),
+    path('client/orders/', views.ClientOrders.as_view(), name='get orders of the client'),
     # path('client/orders/take/', views.ClientOrdersTake.as_view(), name='take order under the client'),
 
     # this api's looks pointless

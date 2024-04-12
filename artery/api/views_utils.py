@@ -57,3 +57,10 @@ check_logged_in_under_company = lambda method: check_logged_in(
     'company_id',
     'the user must be logged in under the company'
 )
+
+
+check_logged_in_under_client = lambda method: check_logged_in(
+    method,
+    'client_id',
+    'the user must be logged in under the client'
+)

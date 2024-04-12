@@ -34,7 +34,8 @@ urlpatterns = [
 
     path('client/city/', views.ClientChangeCity.as_view(), name='change city of the client'),
     path('client/orders/', views.ClientOrders.as_view(), name='get orders of the client'),
-    # path('client/orders/take/', views.ClientOrdersTake.as_view(), name='take order under the client'),
+    path('client/orders/order/', views.ClientOrdersOrder.as_view(), name='take order under the client'),
+    # path('client/orders/make_route/', views.ClientOrdersMakeRoute.as_view(), name='make route'),
 
     # this api's looks pointless
     # client/orders/get/

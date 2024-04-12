@@ -400,13 +400,6 @@ class ClientChangeCity(ViewWithGet):
 
 
 class ClientOrders(ViewWithGet):
-    def get(self, _):
-        client_id = 1
-        return json_response(
-            ok=True,
-            info=orders.get_by_client(client_id)
-        )
-
     @check_logged_in_under_client
     @check_fields('client_id')
     def post(self, _, client_id):
@@ -414,3 +407,10 @@ class ClientOrders(ViewWithGet):
             ok=True,
             info=orders.get_by_client(client_id),
         )
+
+
+class ClientOrdersOrder(ViewWithGet):
+    @check_logged_in_under_client
+    @check_fields('client_id', 'city_start_id', 'city_end_id')
+    def post(self, _, client_id, city_start_id, city_end_id):
+        pass

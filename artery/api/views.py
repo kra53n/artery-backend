@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
-from .services import cities, roads
+from .services import cities, products, roads
 from .shortcuts import json_response
 from .models import Company, Company_City, City, Client
 from .views_utils import check_fields, check_logged_in_under_company
@@ -319,4 +319,14 @@ class CompanyRoadsEdit(ViewWithGet):
         return json_response(
             ok=True,
             info=roads.edit(road_id, param, param_val),
+        )
+
+
+class CompanyProducts(ViewWithGet):
+    @check_fields('company_id')
+    def post(self, _, company_id):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=products.get_by_company(company_id),
         )

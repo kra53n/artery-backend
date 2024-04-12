@@ -133,7 +133,11 @@ class Order(models.Model):
         'CLOSED': 'closed',
         'CANCELED': 'canceled',
     }
-    statuses = models.CharField(max_length=8, choices=STATUSES)
+    status = models.CharField(max_length=8, choices=STATUSES)
+    client = models.ForeignKey(
+        'Client',
+        on_delete=models.DO_NOTHING,
+    )
     
 
 class Order_Product(models.Model):

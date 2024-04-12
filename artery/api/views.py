@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse
 from django.views import View
 
-from .services import cities, clients, products, roads
+from .services import cities, clients, orders, products, roads
 from .shortcuts import json_response
 from .models import Company, Company_City, City, Client
 from .views_utils import check_fields, check_logged_in_under_company, check_logged_in_under_client
@@ -340,4 +340,21 @@ class ClientChangeCity(ViewWithGet):
         return json_response(
             ok=True,
             info=clients.change_city(client_id, city_id)
+        )
+
+
+class ClientOrders(ViewWithGet):
+    def get(self, _):
+        client_id = 1
+        return json_response(
+            ok=True,
+            info=orders.get_by_client(client_id)
+        )
+
+    @check_logged_in_under_client
+    @check_fields('client_id')
+    def post(self, _, client_id):
+        return json_response(
+            ok=True,
+            info=orders.get_by_client(client_id),
         )

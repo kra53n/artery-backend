@@ -330,6 +330,61 @@ class CompanyProducts(ViewWithGet):
             ok=True,
             info=products.get_by_company(company_id),
         )
+    
+
+class CompanyProductsAdd(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields(
+        'company_id',
+        'name',
+        'cost',
+        'size',
+        'weight',
+        'description'
+    )
+    def post(
+        self,
+        _,
+        company_id: int,
+        name: str,
+        cost: float,
+        size: float,
+        weight: float,
+        description: str
+    ):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=products.add_to_company(
+                company_id,
+                name,
+                cost,
+                size,
+                weight,
+                description,
+            )
+        )
+
+        
+class CompanyProductsDel(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields('product_id')
+    def post(self, _, product_id: int):
+        # TODO: add exceptions
+        return json_response(
+            ok=True,
+            info=products.delete(product_id)
+        )
+        
+
+class CompanyProductsEdit(ViewWithGet):
+    @check_logged_in_under_company
+    @check_fields('product_id', 'param', 'param_val')
+    def post(self, _, product_id: int, param: str, param_val):
+        # TODO: add exeptions
+        return json_response(
+            ok=True,
+            info=products.edit(product_id, param, param_val)
 
 
 class ClientChangeCity(ViewWithGet):

@@ -15,3 +15,25 @@ def get_by_company(company_id: int):
         }
         for product in products
     ]
+
+
+def add_to_company(company_id: int, name: str, cost: float, size: float, weight: float, description: str):
+    company = Company.objects.get(id=company_id)
+    Product(
+        company=company,
+        name=name,
+        cost=cost,
+        size=size,
+        weight=weight,
+        description=description
+    ).save()
+
+
+def delete(product_id: int):
+    Product.objects.get(id=product_id).delete()
+
+
+def edit(product_id: int, param: str, param_val):
+    product = Product.objects.get(id=product_id)
+    exec(f'product.{param} = {param_val}')
+    product.save()

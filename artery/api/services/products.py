@@ -1,20 +1,26 @@
 from ..models import Company, Product
 
 
+def _get_dict(product: Product):
+    return {
+        #'image': product.image,
+        'name': product.name,
+        'cost': product.cost,
+        'size': product.size,
+        'weight': product.weight,
+        'description': product.description,
+    }
+
+
+def get(product_id: int):
+    product = Product.objects.get(id=product_id)
+    return _get_dict(product)
+
+
 def get_by_company(company_id: int):
     company = Company.objects.get(id=company_id)
     products = Product.objects.filter(company=company)
-    return [
-        {
-            #'image': product.image,
-            'name': product.name,
-            'cost': product.cost,
-            'size': product.size,
-            'weight': product.weight,
-            'description': product.description,
-        }
-        for product in products
-    ]
+    return [_get_dict(product) for product in products]
 
 
 def add_to_company(company_id: int, name: str, cost: float, size: float, weight: float, description: str):

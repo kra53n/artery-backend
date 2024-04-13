@@ -49,7 +49,7 @@ def give_route(client_id: int, product_id: int, by: str):
     company_cities = Company_City.objects.filter(company=company)
 
     roads = [get_as_dict_roads(r) for r in Road.objects.filter(company=company)]
-    cities = [cc.id for cc in company_cities]
-    storage_cities = [cc.id for cc in company_cities if cc.is_storage]
+    cities = [cc.city_id for cc in company_cities]
+    storage_cities = [cc.city_id for cc in company_cities if cc.is_storage]
     client_city = client.city.id
     return make_route(cities, roads, storage_cities, client_city, by)
